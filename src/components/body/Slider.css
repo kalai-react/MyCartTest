@@ -1,0 +1,56 @@
+.horizontal-slider {
+    width: 100%;
+    max-width: 500px;
+    height: 20px;
+    
+}
+
+.example-thumb {
+    font-size: 0.9em;
+    text-align: center;
+    /* background-color: black;
+    color: white; */
+    background-color: white;
+    color: black; 
+    cursor: pointer;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    border-radius: 50%;
+}
+
+.example-thumb.active {
+    background-color: #939af9;
+}
+
+.example-track {
+    position: relative;
+    background: #5f69ef;
+}
+
+.example-track.example-track-1 {
+    background: #5f69ef;
+}
+
+.example-track.example-track-2 {
+    background: #5f69ef;
+}
+
+.horizontal-slider .example-track {
+    top: 8px;
+    height: 3px;
+}
+
+.horizontal-slider .example-thumb {
+    top: 1px;
+    /* width: 50px;
+    height: 48px; */
+    width: 18px;
+    height: 18px;
+    line-height: 50px;
+}
+
+.slideTxt {
+    top: -40px;
+    right: 0;
+    position: absolute;
+}
