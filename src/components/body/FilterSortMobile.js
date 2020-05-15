@@ -7,7 +7,6 @@ import './FilterSortMobile.css';
 
 export default function FilterSortMobile(props) {
 
-    let checkedObj = { checked: "checked" };
     let { sortOption, changeSortOption } = props.sortInfo || {};
     const [sortVal, setSortVal] = React.useState(sortOption);
 
@@ -38,21 +37,9 @@ export default function FilterSortMobile(props) {
     const [modalIsOpen_sort, setIsOpen_sort] = React.useState(false);
     /* For Sort option - End*/
 
-    /* For Filter option */
-    let openModal_filter = () => {
-        setIsOpen_filter(true);
-    };
-    
-    let closeModal_filter = () => {
-        setIsOpen_filter(false);
-    };
-
-    const [modalIsOpen_filter, setIsOpen_filter] = React.useState(false);
-    /* For Filter option - End*/
-
-
     /* For Slider */
-    const [filterVal, setFilterVal] = React.useState({minVal: 10, maxVal: 100000});
+    let { minPrice, maxPrice, applyFilter } = props.filterInfo || {};
+    const [filterVal, setFilterVal] = React.useState({minVal: minPrice, maxVal: maxPrice});
     let onChangeSlider = (rangeVal) => {
         let minVal = rangeVal && rangeVal[0] || 0;
         let maxVal = rangeVal && rangeVal[1] || 10000;
@@ -61,12 +48,33 @@ export default function FilterSortMobile(props) {
             maxVal
         });
     }
-    let { applyFilter } = props.filterInfo || {};
-    let filterValues = {
+    let filterValues_forSlider = {
+        minVal: minPrice,
+        maxVal: maxPrice
+    };
+    let filterValues_forApply = {
         minPrice: filterVal.minVal,
         maxPrice: filterVal.maxVal
     };
     /* For Slider - End */
+
+    /* For Filter option */
+    let openModal_filter = () => {
+        setIsOpen_filter(true);
+    };
+    
+    let closeModal_filter = () => {
+        setIsOpen_filter(false);
+    };
+    let afterOpenModal_filter = () => {
+        setFilterVal({minVal: minPrice, maxVal: maxPrice});
+    }
+
+    const [modalIsOpen_filter, setIsOpen_filter] = React.useState(false);
+    /* For Filter option - End*/
+
+
+    
 
     
 
@@ -88,17 +96,17 @@ export default function FilterSortMobile(props) {
                         {modalIsOpen_sort && 
                             <div className="--popup-body --sort-modal">
                                 <h4>Sort Options</h4>
-                                <label class="container" onClick={() => setSortVal(1)}>Price -- High Low
+                                <label className="container" onClick={() => setSortVal(1)}>Price -- High Low
                                     <input type="radio" checked={(sortVal === 1) ? ('checked') : '' } name="sort_radio" />
-                                    <span class="checkmark"></span>
+                                    <span className="checkmark"></span>
                                 </label>
-                                <label class="container" onClick={() => setSortVal(2)}>Price -- Low High
+                                <label className="container" onClick={() => setSortVal(2)}>Price -- Low High
                                     <input type="radio" checked={(sortVal === 2) ? ('checked') : '' } name="sort_radio" />
-                                    <span class="checkmark"></span>
+                                    <span className="checkmark"></span>
                                 </label>
-                                <label class="container" onClick={() => setSortVal(3)}>Discount
+                                <label className="container" onClick={() => setSortVal(3)}>Discount
                                     <input type="radio" checked={(sortVal === 3) ? ('checked') : '' } name="sort_radio" />
-                                    <span class="checkmark"></span>
+                                    <span className="checkmark"></span>
                                 </label>
                             </div>
                         }
@@ -114,20 +122,26 @@ export default function FilterSortMobile(props) {
                 
                 <Modal
                     isOpen={modalIsOpen_filter}
+                    onAfterOpen={afterOpenModal_filter}
                     onRequestClose={closeModal_filter}
                     style={customStyles}
                     contentLabel="Filter Modal"
                     >
 
-                        <div className="--popup-body">
-                            <h4>Filters Options</h4>
-                            <FilterSection onChangeSlider={onChangeSlider} filterVal={filterVal}/>
-                            <div className="--popup-priceTxt">Price</div>
-                        </div>
-                        <div className="--popup-bottom" >
-                            <div onClick={closeModal_filter}>Cancel</div>
-                            <div onClick={() => {applyFilter(filterValues); closeModal_filter()}}>Apply</div>
-                        </div>
+                        {
+                        modalIsOpen_filter && 
+                            <React.Fragment>
+                                <div className="--popup-body">
+                                    <h4>Filters Options</h4>
+                                    <FilterSection onChangeSlider={onChangeSlider} filterVal={filterValues_forSlider}/>
+                                    <div className="--popup-priceTxt">Price</div>
+                                </div>
+                                <div className="--popup-bottom" >
+                                    <div onClick={closeModal_filter}>Cancel</div>
+                                    <div onClick={() => {applyFilter(filterValues_forApply); closeModal_filter()}}>Apply</div>
+                                </div>
+                            </React.Fragment>
+                        }
                     
                 </Modal>
             </div>
